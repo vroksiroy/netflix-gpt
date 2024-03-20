@@ -10,6 +10,7 @@ import SecondaryContainer from './SecondaryContainer';
 const Browse = () => {
 
     useNowPlayingMovies()
+    usePopularMovies()
 
     return (
         <div>
