@@ -3,12 +3,11 @@ import Header from './Header'
 import { checkValidData } from '../utils/Validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { BG_IMG, USER_AVATAR } from '../utils/constants';
 
 const Login = () => {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const [isSignInForm, setIsSignInForm] = React.useState(true)
@@ -34,39 +33,31 @@ const Login = () => {
                     // Signed up 
                     const user = userCredential.user;
                     updateProfile(user, {
-                        displayName: fullname.current.value, photoURL: "https://shorturl.at/wzGMO"
+                        displayName: fullname.current.value, photoURL: USER_AVATAR
                       }).then(() => {
-                        const {uid, email, displayName, photoURL} = user;
+                        const {uid, email, displayName, photoURL} = auth.currentUser;
                         dispatch(addUser({uid, email, displayName, photoURL}))
-                        navigate("/browse")
                       }).catch((error) => {
                         setErrorMessage(error.message)
                       });
                     console.log(user)
-                    // ...
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     setErrorMessage(errorCode + "-" + errorMessage)
-                    // ..
                 });
 
         } else {
             signInWithEmailAndPassword(auth, email.current.value, password.current.value)
                 .then((userCredential) => {
-                    // Signed in 
                     const user = userCredential.user;
                     console.log(user)
-                    navigate("/browse")
-
-                    // ...
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     setErrorMessage(errorCode + "-" + errorMessage)
-
                 });
         }
     }
@@ -75,7 +66,7 @@ const Login = () => {
         <div>
             <Header />
             <div className='absolute'>
-                <img src="https://shorturl.at/rtPZ3" alt="bgimg" />
+                <img src={BG_IMG} alt="bgimg" />
             </div>
             <form onSubmit={(e) => e.preventDefault()} className='absolute p-12 bg-black w-96 my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80'>
                 <h1 className='font-bold text-3xl py-4'>{isSignInForm ? "Sign In" : "Sign Up"}</h1>
