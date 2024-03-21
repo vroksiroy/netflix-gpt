@@ -35,6 +35,11 @@
 - TMDB Img CDN Url
 - Improved the browse page css
 - Custom hook for popular movies
+- GPT search page
+- GPT searchbar
+- Multi-language feature in our app
+- Integrate GPT APIs
+
 
 # Features
 
